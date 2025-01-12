@@ -29,7 +29,7 @@ npm install
 ```
 
 
-3.setup azure cache for redis:
+ 2. Setup azure cache for redis:
 ```bash
 Log in to your Azure portal.
 Navigate to "Create a Resource" > "Databases" > "Azure Cache for Redis".      
@@ -37,7 +37,7 @@ Configure the settings (e.g., pricing tier, resource group, and region), then cr
 Copy the Host Name and Access Key from the "Access Keys" section.
 ```
 
-4.setup smtp server:
+ 3. Setup smtp server:
 ```bash
 Navigate to Google Account Settings > Security.
 Enable 2-Step Verification.
@@ -47,7 +47,7 @@ Copy the generated password.
 ```
 
 
-5. Create `.env` file:
+4. Create `.env` file:
    
 ```env
 MONGODB_URI=mongodb+srv://[your-connection-string]
@@ -64,7 +64,7 @@ ALERT_THRESHOLD=5
 TIME_WINDOW=600000
 ```
 
-6. Start server:
+5. Start server:
 ```bash
 # Development
 npm run dev
