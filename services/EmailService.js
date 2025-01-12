@@ -12,10 +12,10 @@ class EmailService {
     });
   }
 
-  async sendAlert(ip,reason) {
+  async sendAlert(ip,reason,recipientEmail) {
     const mailOptions = {
       from: process.env.SMTP_USER,
-      to: process.env.ALERT_EMAIL,
+      to: recipientEmail,
       subject: `Security Alert: Multiple Failed Requests from ${ip}`,
       html: `
         <h2>Security Alert</h2>

@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const helmet = require('helmet');
+const cors = require('cors');
 const compression = require('compression');
 const connectDB = require('./config/database');
 const SecurityMonitor = require('./services/SecurityMonitor');
@@ -25,6 +26,7 @@ class App {
   }
 
   setupMiddleware() {
+    this.app.use(cors());
     this.app.use(helmet());
     this.app.use(compression());
     this.app.use(express.json({ limit: '10kb' }));
@@ -45,7 +47,6 @@ class App {
       return this.handleFailedRequest(error, req, res);
     }
 
-    // Add more token validation logic here
     next();
   }
 
@@ -56,11 +57,12 @@ class App {
         : req.headers['x-forwarded-for']?.split(',')[0] || req.ip;
     const endpoint = req.path; // Get endpoint from request
     const reason = error.message || 'Unknown reason';
+    const recipientEmail = req.body.email || req.headers['x-alert-email'];
     
     try {
       const { shouldAlert } = await SecurityMonitor.trackFailedAttempt(ip, endpoint, reason);
       if (shouldAlert) {
-        await EmailService.sendAlert(ip,reason);
+        await EmailService.sendAlert(ip,reason,recipientEmail);
       }
 
       res.status(error.status || 400).json({
